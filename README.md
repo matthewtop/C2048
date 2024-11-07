@@ -16,7 +16,7 @@ Clone the repository:
 Go to repository location and compile the C file:
 
 ```bash
-  cd C2048
+  cd C2048/
 ```
 ```bash
   gcc -o game game.c
