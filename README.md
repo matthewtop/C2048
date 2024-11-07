@@ -2,6 +2,8 @@
 
 This project is a terminal-based implementation of the popular game 2048. Use 'WSAD' to move numbers and 'Q' to quit the game.
 
+![Game](files/game.png)
+
 
 ## Installation
 
