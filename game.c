@@ -4,7 +4,6 @@
 #include <termios.h>
 #include <unistd.h>
 
-
 int board[4][4];
 int score = 0;
 
@@ -20,13 +19,24 @@ int getch() {
     return input;
 }
 
-void printMainMenu(){
+void printBanner() {
     system("clear"); // for windows use system("cls")
-    printf("|----------------2048 by matthewtop ----------------|\n\n");
-    printf("|Use 'WSAD' to move the tiles.                      |\n");
-    printf("|Use 'Q' to quit                                    |\n");
-    printf("|Press any key to start the game                    |\n\n");
-    printf("|---------------------------------------------------|\n");
+    printf("\033[0;32m");
+    printf("  _______  ________  ___   ___  ________     \n");
+    printf(" /  ___  \\|\\   __  \\|\\  \\ |\\  \\|\\   __  \\    \n");
+    printf("/__/|_/  /\\ \\  \\|\\  \\ \\  \\\\_\\  \\ \\  \\|\\  \\   \n");
+    printf("|__|//  / /\\ \\  \\\\\\  \\ \\______  \\ \\   __  \\  \n");
+    printf("    /  /_/__\\ \\  \\\\\\  \\|_____|\\  \\ \\  \\ |\\ \\\n");
+    printf("   |\\________\\ \\_______\\     \\ \\__\\ \\_______\\\n");
+    printf("    \\|_______|\\|_______|      \\|__|\\|_______|      by matthewtop\n\n");
+    printf("\033[0m");
+}
+
+void printMainMenu(){
+    printBanner();
+    printf("Use WSAD to move\n");
+    printf("Press Q to quit\n");
+    printf("Press any key to start\n");
 }
 
 void addRandomTile() {
@@ -52,24 +62,47 @@ void addRandomTile() {
 }
 
 void initBoard() {
-    for (int i = 0; i < 4; i++)
-        for (int j = 0; j < 4; j++)
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
             board[i][j] = 0;
-
+        }
+    }
     addRandomTile();
     addRandomTile();
 }
 
-
+const char* colorNumber(int number){
+    switch(number) {
+        case 2: return "\033[0;34m";  // blue 
+        case 4: return "\033[0;33m";  // yellow 
+        case 8: return "\033[0;32m";  // green 
+        case 16: return "\033[0;35m"; // magenta 
+        case 32: return "\033[0;36m"; // cyan 
+        case 64: return "\033[1;31m"; // red 
+        case 128: return "\033[1;33m"; // lyellow 
+        case 256: return "\033[1;34m"; // lblue 
+        case 512: return "\033[1;35m"; // lmagenta 
+        case 1024: return "\033[1;36m"; // lcyan 
+        case 2048: return "\033[1;37m"; // lwhite 
+        default: return "\033[0m";
+    }
+}
 
 void printBoard() {
     system("clear"); // for windows use system("cls")
+    printBanner();
+    printf("+-------+-------+-------+-------+\n");
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            if (board[i][j] == 0) printf(".\t");
-            else printf("%d\t", board[i][j]);
+            int value = board[i][j];
+            if (value == 0) {
+                printf("|       ");  
+            } else {
+                printf("|%s%*d\033[0m ", colorNumber(value), 5, value);  
+            }
         }
-        printf("\n");
+        printf("|\n");
+        printf("+-------+-------+-------+-------+\n");
     }
     printf("Score: %d\n", score);
 }
@@ -158,7 +191,6 @@ int checkGameOver() {
     }
     return 1;
 }
-
 
 
 int main() {
